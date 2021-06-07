@@ -35,7 +35,7 @@ router.get('/list',function(req,res){
 
 router.get('/page/',function(req,res){
     db.query('SELECT * FROM text WHERE id=?',[req.query.num],function (error, results, fields) {       
-      console.log(results[0]);
+      if(error) throw error;
       var html = readpage.HTML(results[0].title, results[0].text, results[0].id);
       res.send(html);
     });
@@ -43,6 +43,7 @@ router.get('/page/',function(req,res){
 
 router.post('/editPage',function(req,res){
   db.query('SELECT * FROM text WHERE id=?',[req.body.num],function (error, results, fields) {       
+      if(error) throw error;
       var html = editpage.HTML(results[0].title, results[0].text, results[0].id);
       res.send(html);
     });
@@ -51,9 +52,16 @@ router.post('/editPage',function(req,res){
 router.post('/editProcess',function(req,res){
   console.log(req.body);
   db.query('UPDATE text SET title=?, text=?  WHERE id=?',[req.body.title, req.body.text, req.body.id], function(error, results) {       
+      if(error) throw error;
       res.redirect(`/read/page/?num=${req.body.id}`);
     });
 });
 
+router.post('/delete',function(req,res){
+  db.query('DELETE FROM text WHERE id=?',[req.body.num],function (error, results) {       
+    if(error) throw error;
+    res.redirect('/read/list')
+    });
+});
 
 module.exports = router;
