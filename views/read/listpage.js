@@ -3,11 +3,17 @@ module.exports = {
     //계산 
     var i=0;
     var test=``;
+    var img =``;
     while(i<list.length){
+      if(list[i].text.indexOf('<img src="') === -1){
+        img = `<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: image" preserveAspectRatio="xMidYMid slice" focusable="false"><title>`+list[i].id+`</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Image</text></svg>`  
+      }else{
+        // 이미지 사이즈 360x225
+        img = `<img  class="bd-placeholder-img card-img-top" width="100%" height="225" src="${list[i].text.substring(list[i].text.indexOf('<img src="')+10 ,list[i].text.indexOf('"',list[i].text.indexOf('<img src="')+10))}" style="border-bottom: 1px solid black;">`
+      }
       test+=`<div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: image" preserveAspectRatio="xMidYMid slice" focusable="false"><title>`+list[i].id+`</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Image</text></svg>
-
+          <div class="card shadow-sm"> 
+            ${img}
             <div class="card-body">
               <p class="card-text">`+list[i].title+`</p>
               <div class="d-flex justify-content-between align-items-center">

@@ -5,6 +5,9 @@
 
 module.exports = {
   HTML:function(title, text, num=''){
+     //text.indexOf('<img src="')+10 >> src 시작 위치
+     //text.indexOf('"',10)-1 >> src 마지막 위치
+    
     var html= `<!doctype html>
 <html lang="en">
   <head>

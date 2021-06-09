@@ -20,9 +20,12 @@ module.exports = {
       plugins: "lists, link, image, media",
       toolbar:
         "h1 h2 bold italic strikethrough blockquote bullist numlist backcolor | link image media | removeformat help",
-      menubar: true,
-      language: "ko_KR",
-        forced_root_block : false
+        menubar: true,
+        language: "ko_KR",
+        forced_root_block : false,
+        images_upload_url: 'https://webproject-dldnjscks19246462.codeanyapp.com/write/',
+        automatic_uploads: false,
+        image_caption: true
         });
 </script>
 

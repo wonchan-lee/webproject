@@ -17,10 +17,16 @@ var flash = require('connect-flash');
 
 app.use(express.static(path.join(__dirname, 'www')));
 app.engine('html', require('ejs').renderFile);
-//
+
+//PayloadTooLargeError: request entity too large 에러 해결
+app.use(express.json({ limit : "50mb" }));
+app.use(express.urlencoded({ limit:"50mb", extended: false }));
+
 app.use(bodyParser.urlencoded({
   extended: false
 }));
+
+
 app.use(compression());
 app.use(session({
   secret: 'asadlfkj!@#!@#dfgasdg',

@@ -25,7 +25,7 @@ db.query('SELECT * FROM text WHERE id=1', function (error, results, fields) {
 
 
 router.get('/list',function(req,res){
-    db.query('SELECT id, title FROM text', function (error, results, fields) {
+    db.query('SELECT * FROM text', function (error, results, fields) {
             if(error) throw error;
             var html = listpage.HTML(results);
             res.send(html);
