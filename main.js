@@ -6,6 +6,7 @@ var loginRouter = require('./routes/login.js');
 var signinRouter = require('./routes/signin.js');
 var writeRouter = require('./routes/write.js');
 var readRouter = require('./routes/read.js');
+
 var bodyParser = require('body-parser');
 var router = express.Router();
 //
@@ -28,10 +29,13 @@ app.use(bodyParser.urlencoded({
 
 
 app.use(compression());
+
+
+
 app.use(session({
   secret: 'asadlfkj!@#!@#dfgasdg',
   resave: true,
-  saveUninitialized: true,
+  saveUninitialized: true
 }))
 app.use(flash());
 var passport = require('./lib/passport')(app);

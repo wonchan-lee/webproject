@@ -23,7 +23,7 @@ module.exports = {
         menubar: true,
         language: "ko_KR",
         forced_root_block : false,
-        images_upload_url: 'https://webproject-dldnjscks19246462.codeanyapp.com/write/',
+        images_upload_url: 'https://webproject-dldnjscks19246462.codeanyapp.com/',
         automatic_uploads: false,
         image_caption: true
         });

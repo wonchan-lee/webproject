@@ -4,7 +4,7 @@
 
 
 module.exports = {
-  HTML:function(title, text, num=''){
+  HTML:function(title, text, num='', date="2021"){
      //text.indexOf('<img src="')+10 >> src 시작 위치
      //text.indexOf('"',10)-1 >> src 마지막 위치
     
@@ -122,7 +122,7 @@ module.exports = {
                     <input type="submit" value="Edit" class="btn btn-sm btn-outline-secondary">
                   </form>
                 </div>
-                <small class="text-muted">9 mins</small>
+                <small class="text-muted">${date}</small>
               </div>
             </div>
           </div>

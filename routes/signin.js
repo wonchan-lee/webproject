@@ -17,13 +17,13 @@ router.post('/',function(req,res){
        var i=0;
        var checkId = false;
        while(i<results.length){
-         if(results[i].email === req.body.email){
+         if((results[i].email === req.body.email)||(results[i].nickname === req.body.nickname)){
            checkId = true;
          }
          i++;
        }
        if(checkId){
-         res.send('<script type="text/javascript">alert("email overlap"); document.location.href="/login/signin"</script>');
+         res.send('<script type="text/javascript">alert("email or nickname overlap"); document.location.href="/login/signin"</script>');
        }else{
            db.query(`INSERT INTO test(email, password, nickname) VALUES(?,?,?)`
                              ,[req.body.email,req.body.password, req.body.nickname],function(error, result){

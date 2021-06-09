@@ -28,7 +28,7 @@ module.exports = {
                     <input type="submit" value="delete" class="btn btn-sm btn-outline-secondary" id="deletesubmit"></button>
                   </form>
                 </div>
-                <small class="text-muted">9 mins</small>
+                <small class="text-muted">작성자: ${list[i].author}</small>
               </div>
             </div>
           </div>
