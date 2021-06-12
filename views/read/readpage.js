@@ -20,6 +20,29 @@
 // <!-- --></tr>
 //
 
+/*
+  <div class="album py-5 bg-light">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-12 row-cols-md-12 g-12">
+       <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="50" xmlns="http://www.w3.org/2000/svg" role="img"  preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#55595c"/><text x="17" y="50%" fill="#eceeef" dy=".3em">댓글</text></svg>
+            <div class="card-body">
+              <p class="card-text"></p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <input type="hidden" name="num" value="${num}">
+                    <input type="submit" value="전송" class="btn btn-sm btn-outline-secondary">
+                </div>
+              </div>
+             </div>
+          
+         </div>
+        </div>
+      </div>
+    </div>
+  </div>
+*/
 
 module.exports = {
   HTML:function(title, text, num='', date="2021", views='0', querynum=0 ,comment={}){
@@ -28,18 +51,32 @@ module.exports = {
     
     //댓글 구현
      var i =0;
-     var com = `<table align="center" style="border: 1px solid black; padding: 3px;">`
+     var com = `
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-12 row-cols-md-12 g-12">
+       <div class="col">`
      while(i<comment.length){
        if(comment[i].author == ''){ comment[i].author = 'guest';}
-       com+=`<tr style="border: 1px solid black;"><td style="border: 1px solid black; padding: 5px;">작성자: ${comment[i].author}</td>
-                                                  <td style="border: 1px solid black; padding: 5px;">작성일: ${comment[i].date_time}</td>
-                                                  <td style="border: 1px solid black; padding: 5px;">내용: ${comment[i].comment}</td>
-                                                  <td style="border: 1px solid black; padding: 5px;"><form action="/read/commentDelete" method="post"><input type="hidden" name="num" value="${comment[i].num}">
+       com+=`<div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="50" xmlns="http://www.w3.org/2000/svg" role="img"  preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="black"/><text x="17" y="50%" fill="#eceeef" dy=".3em">
+              ${comment[i].author}</text></svg>
+            <div class="card-body">
+              <p class="card-text">${comment[i].comment}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                   <div class="btn-group"><form action="/read/commentDelete" method="post"><input type="hidden" name="num" value="${comment[i].num}">
                                                                                                      <input type="hidden" name="id" value="${comment[i].id}">
-                                                                                                     <input type="submit" value="삭제"></form></td></tr>`;
+                                                                                                     <input type="submit" value="삭제" class="btn btn-sm btn-outline-secondary" align="right"> &nbsp; ${comment[i].date_time}</form>
+                    </div>
+              </div>
+             </div>
+             </div>`
+             ;
        i++;
      } 
-     com += `</table>`
+     com += `
+        </div>
+      </div>
+  </div>`;
     //댓글 구현
     
     
@@ -166,19 +203,32 @@ module.exports = {
       </div>
     </div>
   </div>
-
-<!-- 댓글 기능 -->
-<form action="/read/commentProcess" method="post" style="padding-top: 30px; padding-bottom: 10px;"> 
-    <input type="hidden" name="pageNum" value="${querynum}">
-    <table align="center" style="border: 1px solid #55595c;">
-      <tr>
-        <td style="border: 1px solid #55595c; padding: 5px;">댓글</td>
-        <td><input type="text" name="comment"></td>
-        <td><input type="submit" value="쓰기">
-      </tr>
-    </table>
+<div class="album py-5 bg-light">
+<form action="/read/commentProcess" method="post" style="padding-top: 30px;padding-bottom: 60px;"> 
+  <input type="hidden" name="pageNum" value="${querynum}">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-12 row-cols-md-12 g-12">
+       <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="50" xmlns="http://www.w3.org/2000/svg" role="img"  preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="black"/><text x="17" y="50%" fill="#eceeef" dy=".3em">댓글</text></svg>
+            <div class="card-body">
+              <p class="card-text"><input style="width:100%;" type="text" name="comment"></p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <input type="hidden" name="num" value="${num}">
+                    <input type="submit" value="전송" class="btn btn-sm btn-outline-secondary">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 </form>
 ${com}
+</div>
+
+
 <!-- -->
 </main>
 
