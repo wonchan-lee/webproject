@@ -1,41 +1,21 @@
 module.exports = {
   HTML:function(list){
-    //계산 
-    var i=0;
-    var test=``;
-    var img =``;
-    while(i<list.length){
-      if(list[i].text.indexOf('<img src="') === -1){
-        img = `<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: image" preserveAspectRatio="xMidYMid slice" focusable="false"><title>`+list[i].id+`</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Image</text></svg>`  
-      }else{
-        // 이미지 사이즈 360x225
-        img = `<img  class="bd-placeholder-img card-img-top" width="100%" height="225" src="${list[i].text.substring(list[i].text.indexOf('<img src="')+10 ,list[i].text.indexOf('"',list[i].text.indexOf('<img src="')+10))}" style="border-bottom: 1px solid black;">`
-      }
-      test+=`<div class="col">
-          <div class="card shadow-sm"> 
-            ${img}
-            <div class="card-body">
-              <p class="card-text">`+list[i].title+`</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" onclick="window.location.href = '/read/page/?num=`+list[i].id+`'" class="btn btn-sm btn-outline-secondary">View</button>
-                  <form action="/read/editPage" method="post">
-                    <input type="hidden" name="num" value="`+list[i].id+`">
-                    <input type="submit" value="Edit" class="btn btn-sm btn-outline-secondary" id="submit"></button>
-                  </form>
-                  <form action="/read/delete" method="post">
-                    <input type="hidden" name="num" value="`+list[i].id+`">
-                    <input type="submit" value="delete" class="btn btn-sm btn-outline-secondary" id="deletesubmit"></button>
-                  </form>
-                </div>
-                <small class="text-muted">작성자: ${list[i].author}</small>
-              </div>
-            </div>
-          </div>
-        </div>`;
-      i++;
+        
+    ///계산 목록으로 가는 link
+    var j=0;
+    var num = parseInt(list.length/9);
+    var pageNum=``;
+    while(j<num+1){
+      j++;
+      pageNum+=`<input type="button" onclick="
+      fetch('page/?num=${j}').then(function(response){
+        response.text().then(function(text){
+          document.getElementById('article').innerHTML = text;
+        })
+      })"
+      value="${j}"> &nbsp; &nbsp;`;
     }
-    //계산
+    ///계산
     
     var html= `
 <!doctype html>
@@ -156,13 +136,14 @@ module.exports = {
   <div class="album py-5 bg-light">
     <div class="container">
 
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        ${test}
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="article">
+              ${this.page(list, 1)}
           </div>
         </div>
       </div>
     </div>
   </div>
+  <div align="center" style="margin-top: 20px;">${pageNum}</div>
 
 </main>
 
@@ -184,5 +165,83 @@ module.exports = {
 </html>
     `
     return html;
+  },
+  
+  
+  page: function(list={}, num=0){
+    console.log('test');
+    console.log(list[10].text);
+    
+    
+    var i=(num-1)*9;
+    var test=
+        `<!doctype html>
+          <html lang="en">
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+              <meta name="description" content="">
+              <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+              <meta name="generator" content="Hugo 0.83.1">
+              <title>Article List</title>
+
+              <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/album/">
+
+
+
+
+            </head>
+            <body>
+                    `;
+    var img =``;
+    // 목록 수
+    var number = parseInt(list.length/9)+1;
+    
+    // 나머지 글 갯수
+    var last = list.length%9;
+    //
+    var listnum=0;
+    if(num == number){
+      listnum = i+last;
+    }else{
+      listnum = num*9;
+    }
+    while(i<listnum){
+      if(list[i].text.indexOf('<img src="') === -1){
+        img = `<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: image" preserveAspectRatio="xMidYMid slice" focusable="false"><title>`+list[i].id+`</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Image</text></svg>`  
+      }else{
+        // 이미지 사이즈 360x225
+        img = `<img  class="bd-placeholder-img card-img-top" width="100%" height="225" src="${list[i].text.substring(list[i].text.indexOf('<img src="')+10 ,list[i].text.indexOf('"',list[i].text.indexOf('<img src="')+10))}" style="border-bottom: 1px solid black;">`
+      }
+      test+=`<div class="col">
+          <div class="card shadow-sm"> 
+            ${img}
+            <div class="card-body">
+              <p class="card-text">`+list[i].title+`</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" onclick="window.location.href = '/read/page/?num=`+list[i].id+`'" class="btn btn-sm btn-outline-secondary">View</button>
+                  <form action="/read/editPage" method="post">
+                    <input type="hidden" name="num" value="`+list[i].id+`">
+                    <input type="submit" value="Edit" class="btn btn-sm btn-outline-secondary" id="submit"></button>
+                  </form>
+                  <form action="/read/delete" method="post">
+                    <input type="hidden" name="num" value="`+list[i].id+`">
+                    <input type="submit" value="delete" class="btn btn-sm btn-outline-secondary" id="deletesubmit"></button>
+                  </form>
+                </div>
+                <small class="text-muted">작성자: ${list[i].author} &nbsp; 조회수 : ${list[i].views}</small>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      i++;
+    }
+    test+=`
+          </div>
+
+  </body>
+</html>`;
+    return test;
   }
 }

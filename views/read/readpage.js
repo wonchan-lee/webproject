@@ -3,10 +3,45 @@
 //     <a href="/">Go to Home</a>
 
 
+
+//댓글 백업
+// <!-- 댓글 기능 -->
+// <form action="/read/commentProcess" method="post" style="padding-top: 30px; padding-bottom: 10px;"> 
+//     <input type="hidden" name="pageNum" value="${querynum}">
+//     <table align="center" style="border: 1px solid #55595c;">
+//       <tr>
+//         <td style="border: 1px solid #55595c; padding: 5px;">댓글</td>
+//         <td><input type="text" name="comment"></td>
+//         <td><input type="submit" value="쓰기">
+//       </tr>
+//     </table>
+// </form>
+// ${com}
+// <!-- --></tr>
+//
+
+
 module.exports = {
-  HTML:function(title, text, num='', date="2021"){
+  HTML:function(title, text, num='', date="2021", views='0', querynum=0 ,comment={}){
      //text.indexOf('<img src="')+10 >> src 시작 위치
      //text.indexOf('"',10)-1 >> src 마지막 위치
+    
+    //댓글 구현
+     var i =0;
+     var com = `<table align="center" style="border: 1px solid black; padding: 3px;">`
+     while(i<comment.length){
+       if(comment[i].author == ''){ comment[i].author = 'guest';}
+       com+=`<tr style="border: 1px solid black;"><td style="border: 1px solid black; padding: 5px;">작성자: ${comment[i].author}</td>
+                                                  <td style="border: 1px solid black; padding: 5px;">작성일: ${comment[i].date_time}</td>
+                                                  <td style="border: 1px solid black; padding: 5px;">내용: ${comment[i].comment}</td>
+                                                  <td style="border: 1px solid black; padding: 5px;"><form action="/read/commentDelete" method="post"><input type="hidden" name="num" value="${comment[i].num}">
+                                                                                                     <input type="hidden" name="id" value="${comment[i].id}">
+                                                                                                     <input type="submit" value="삭제"></form></td></tr>`;
+       i++;
+     } 
+     com += `</table>`
+    //댓글 구현
+    
     
     var html= `<!doctype html>
 <html lang="en">
@@ -122,7 +157,7 @@ module.exports = {
                     <input type="submit" value="Edit" class="btn btn-sm btn-outline-secondary">
                   </form>
                 </div>
-                <small class="text-muted">${date}</small>
+                <small class="text-muted">작성일: ${date}  &nbsp; 조회수: ${views}</small>
               </div>
             </div>
           </div>
@@ -132,6 +167,19 @@ module.exports = {
     </div>
   </div>
 
+<!-- 댓글 기능 -->
+<form action="/read/commentProcess" method="post" style="padding-top: 30px; padding-bottom: 10px;"> 
+    <input type="hidden" name="pageNum" value="${querynum}">
+    <table align="center" style="border: 1px solid #55595c;">
+      <tr>
+        <td style="border: 1px solid #55595c; padding: 5px;">댓글</td>
+        <td><input type="text" name="comment"></td>
+        <td><input type="submit" value="쓰기">
+      </tr>
+    </table>
+</form>
+${com}
+<!-- -->
 </main>
 
 <footer class="text-muted py-5">

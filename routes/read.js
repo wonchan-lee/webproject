@@ -33,13 +33,41 @@ router.get('/list',function(req,res){
             res.send(html);
     });
 });
+
+router.get('/list/page/',function(req,res){
+    db.query('SELECT * FROM text', function (error, results, fields) {
+            if(error) throw error;
+            var html = listpage.page(results, req.query.num);
+            res.send(html);
+    });
+});
+
     
 
 router.get('/page/',function(req,res){
-    db.query("SELECT title, text, id, date_format(date, '%Y/%m/%d/%H:%i') as date_time FROM text WHERE id=?",[req.query.num],function (error, results, fields) {       
+    db.query("SELECT title, text, id, views, date_format(date, '%Y/%m/%d/%H:%i') as date_time FROM text WHERE id=?",[req.query.num],function (error, results, fields) {     
+      results[0].views+=1;
+      db.query('UPDATE text SET views=? WHERE id=?',[results[0].views, req.query.num],function (error, result, fields) {
+        db.query("SELECT id, num, author, comment, date_format(date, '%Y/%m/%d/%H:%i') as date_time FROM comment WHERE num=?",[req.query.num], function (error, result2, fields) {
+          if(error) throw error;
+          var html = readpage.HTML(results[0].title, results[0].text, results[0].id, results[0].date_time, results[0].views, req.query.num, result2);
+          res.send(html);
+        });
+      });
+    });
+});
+
+router.post('/commentDelete',function(req,res){
+  db.query('DELETE FROM comment WHERE id=?',[req.body.id],function (error, result1) {    
+           console.log(req.body);
+           res.redirect(`/read/page/?num=${req.body.num}`);
+  });
+});
+
+router.post('/commentProcess',function(req,res){
+  db.query('INSERT INTO comment(num, author, comment, date) VALUES(?, ?,?,now())',[parseInt(req.body.pageNum), auth.statusUI(req, res), req.body.comment], function(error, results) {       
       if(error) throw error;
-      var html = readpage.HTML(results[0].title, results[0].text, results[0].id, results[0].date_time);
-      res.send(html);
+      res.redirect(`/read/page/?num=${parseInt(req.body.pageNum)}`);
     });
 });
 
